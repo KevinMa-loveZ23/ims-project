@@ -1,0 +1,2 @@
+npm install jwt-decode
+npm install --save-dev @intlify/vue-i18n-loader
