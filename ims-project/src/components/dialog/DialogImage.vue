@@ -8,6 +8,7 @@
           <q-img
             :src="srcUrl"
             @click="showFullScreen = true"
+            no-native-menu
           />
           <q-dialog
             v-model="showFullScreen"
@@ -15,6 +16,7 @@
             <q-img
               :src="srcUrl"
               @click="showFullScreen = false"
+              no-native-menu
             />
           </q-dialog>
         </div>

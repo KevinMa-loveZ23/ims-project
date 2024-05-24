@@ -44,6 +44,7 @@ async function getImage(serverId, chatId, imgFullName) {
   // const config = makeConfig('get', `server/${serverId}/chat/${chatId}/img/${imgFullName}`)
   const config = makeConfig('get', `server/${serverId}/chat/${chatId}/img/${imgUrlSafeName}`)
   // config.responseType = 'blob'
+  config.timeout = 120 * 1000
   config.responseType = 'arraybuffer'
   return makeSimpleRequest(
     config,

@@ -404,23 +404,26 @@ function getHandler() {
   handler.value = new MessagingHandler(
     uid.value, token.value,
     (rmsg) => {
+      console.log("receive rMsg" + rmsg.localId)
       const sid = BigInt(rmsg.serverId)
       const cid = rmsg.chatId
       const lid = rmsg.localId
       const mid = BigInt(rmsg.messageId)
+      const type = rmsg.type
       // console.log(lid)
-      const text = chatStore.getChatMessageByLocalId(sid, cid, lid).content
+      const content = chatStore.getChatMessageByLocalId(sid, cid, lid).content
       chatStore.updateChatMessage(sid, cid, lid, new MessageShown(
         mid,
         uid.value,
-        text,
-        TYPE_TEXT,
+        content,
+        type,
         false
       ))
       messageList.value = updateMessageList(serverId.value, chatId.value)
       // console.log(messageList.value)
     },
     (fmsg) => {
+      console.log("receive fMsg" + fmsg.content)
       // console.log("forward message")
       const sid = BigInt(fmsg.serverId)
       const cid = fmsg.chatId
@@ -598,7 +601,17 @@ function imageMessage(file) {
     //   TYPE_IMAGE,
     //   false
     // ))
-    chatStore.updateChatMessage(serverId.value, chatId.value, localId, null)
+    // chatStore.updateChatMessage(serverId.value, chatId.value, localId, null)
+    chatStore.updateChatMessage(serverId.value, chatId.value, localId,
+      new MessageShown(
+        BigInt(body.messageId),
+        uid.value,
+        body.fileName,
+        TYPE_IMAGE,
+        true
+      )
+    )
+    send(new ClientMessage(serverId.value, chatId.value, localId, body.fileName, TYPE_IMAGE))
     messageList.value = updateMessageList(serverId.value, chatId.value)
   })
   .catch((err) => {
